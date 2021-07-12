@@ -1,2 +1,5 @@
-# options-buddy
-webtool to assist with tracking market positions on options, to incl. API like Finnhub
+To make this as a MERN stack app
+
+12 Jul 2021
+
+- Create-React-App

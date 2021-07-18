@@ -23,6 +23,5 @@ const UserSchema = new mongoose.Schema({
     default: 0, //note the use of the default property
   },
 });
-
-// eslint-disable-next-line no-undef
+let User; // defining this so Jest doesn't complain
 module.exports = User = mongoose.model("user", UserSchema);

@@ -1,17 +1,13 @@
+import "@testing-library/jest-dom";
 // jest-dom adds custom jest matchers for asserting on DOM nodes.
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-import "@testing-library/jest-dom";
 import { MongoMemoryServer } from "mongodb-memory-server";
 const { MongoClient } = require("mongodb");
 const User = require("../models/User"); // user Model
 const globalSetup = require("../config/global-setup"); // dev server teardown
 const globalTeardown = require("../config/global-teardown"); // dev server teardown
-// const axios = require("axios");
-
-// const express = require("../express"); // express needed for testing
-// const router = express.Router();
 
 describe("Local Development server interactions test", () => {
   //   let connection;
@@ -21,15 +17,12 @@ describe("Local Development server interactions test", () => {
     await globalSetup();
   });
 
-  it("DEV Server - register user and check if email is the same", async () => {
+  it("DEV Server - test if user route is user", async () => {
     const body = {
       name: "Test Person 2",
       email: "Testperson@email.com",
       password: "testings",
     };
-    // console.log(JSON.stringify(body));
-    //http://localhost:5000/api/users
-    //https://pokeapi.co/api/v2/ability/4
 
     await fetch("http://localhost:5000/api/users", {
       method: "GET",
@@ -37,8 +30,6 @@ describe("Local Development server interactions test", () => {
       .then((res) => {
         if (res.ok) {
           console.log("success");
-          console.log(res);
-          return res.json();
         }
       })
       .then((data) => console.log(data))
@@ -56,6 +47,8 @@ describe("Local Development server interactions test", () => {
     //   .then((data) => console.log(data))
     //   .catch((err) => console.log("Error!!!!" + err));
   });
+
+  it("DEV Server - register a user", async () => {});
 
   afterAll(async () => {
     await globalTeardown();
@@ -81,7 +74,7 @@ describe("Local Development server interactions test", () => {
 //     db = await connection.db();
 //   });
 
-//   it("register user and check if email is the same", async () => {
+//   it("MOCK Mongo Server - register user and check if email is the same", async () => {
 //     const users = db.collection("users");
 
 //     let testUserRegistrationDetails = {

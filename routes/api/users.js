@@ -9,6 +9,8 @@ const bcrypt = require("bcryptjs");
 // @desc  register user
 // @access Public
 
+router.get("/", (req, res) => res.send("user Route"));
+
 router.post(
   "/",
   [check("name", "name is required").not().isEmpty()],

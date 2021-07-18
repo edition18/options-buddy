@@ -6,9 +6,10 @@ import "@testing-library/jest-dom";
 import { MongoMemoryServer } from "mongodb-memory-server";
 const { MongoClient } = require("mongodb");
 const User = require("../models/User"); // user Model
-const globalSetup = require("../config/jest-devserver"); // dev server teardown
-const globalTeardown = require("../config/jest-devserver"); // dev server teardown
-const axios = require("axios");
+const globalSetup = require("../config/global-setup"); // dev server teardown
+const globalTeardown = require("../config/global-teardown"); // dev server teardown
+// const axios = require("axios");
+
 // const express = require("../express"); // express needed for testing
 // const router = express.Router();
 
@@ -30,28 +31,30 @@ describe("Local Development server interactions test", () => {
     //http://localhost:5000/api/users
     //https://pokeapi.co/api/v2/ability/4
 
-    //   await fetch("http://localhost:5000/api/users", {
-    //     method: "GET",
-    //   })
-    //     .then((res) => {
-    //       if (res.ok) {
-    //         return res.json();
-    //       }
-    //     })
-    //     .then((data) => console.log(data))
-    //     .catch((err) => console.log("Error!!!!" + err));
-    // });
-
-    await fetch("https://pokeapi.co/api/v2/ability/4", {
+    await fetch("http://localhost:5000/api/users", {
       method: "GET",
     })
       .then((res) => {
         if (res.ok) {
+          console.log("success");
+          console.log(res);
           return res.json();
         }
       })
       .then((data) => console.log(data))
       .catch((err) => console.log("Error!!!!" + err));
+    // });
+
+    // await fetch("https://pokeapi.co/api/v2/ability/4", {
+    //   method: "GET",
+    // })
+    //   .then((res) => {
+    //     if (res.ok) {
+    //       return res.json();
+    //     }
+    //   })
+    //   .then((data) => console.log(data))
+    //   .catch((err) => console.log("Error!!!!" + err));
   });
 
   afterAll(async () => {

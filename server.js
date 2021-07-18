@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/db");
+var cors = require("cors");
 
 const app = express();
 
@@ -7,6 +8,9 @@ const app = express();
 connectDB();
 
 //init middleware
+app.use(cors());
+// enable cors
+
 app.use(express.json({ extended: false }));
 
 // This option allows to choose between parsing the URL-encoded data with the querystring library

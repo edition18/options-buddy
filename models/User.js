@@ -19,8 +19,10 @@ const UserSchema = new mongoose.Schema({
   },
   balance: {
     type: Number,
+    required: true,
     default: 0, //note the use of the default property
   },
 });
 
+// eslint-disable-next-line no-undef
 module.exports = User = mongoose.model("user", UserSchema);

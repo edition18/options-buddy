@@ -24,4 +24,4 @@ const UserSchema = new mongoose.Schema({
   },
 });
 let User; // defining this so Jest doesn't complain
-module.exports = User = mongoose.model("user", UserSchema);
+module.exports = User = mongoose.model("user", UserSchema); // we also set this as a model within mongoose for access later

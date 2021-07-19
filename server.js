@@ -21,7 +21,7 @@ app.get("/", (req, res) => res.send("API RUNNING"));
 
 // define Routes
 // enable cors
-app.use("/api/users", cors(), require("./routes/api/users"));
+app.use("/api/users", cors(), require("./routes/api/users")); // we already exported the routers in the indiv routes
 app.use("/api/auth", cors(), require("./routes/api/auth"));
 app.use("/api/profile", cors(), require("./routes/api/profile"));
 app.use("/api/posts", cors(), require("./routes/api/posts"));

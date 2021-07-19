@@ -17,38 +17,38 @@ describe("Local Development server interactions test", () => {
     await globalSetup();
   });
 
-  it("DEV Server - test if user route is user", async () => {
-    const body = {
-      name: "Test Person 2",
-      email: "Testperson@email.com",
-      password: "testings",
-    };
-
+  it("DEV Server - test if user route is working", async () => {
     await fetch("http://localhost:5000/api/users", {
       method: "GET",
-    })
-      .then((res) => {
-        if (res.ok) {
-          console.log("success");
-        }
-      })
-      .then((data) => console.log(data))
-      .catch((err) => console.log("Error!!!!" + err));
-    // });
-
-    // await fetch("https://pokeapi.co/api/v2/ability/4", {
-    //   method: "GET",
-    // })
-    //   .then((res) => {
-    //     if (res.ok) {
-    //       return res.json();
-    //     }
-    //   })
-    //   .then((data) => console.log(data))
-    //   .catch((err) => console.log("Error!!!!" + err));
+    }).then((res) => {
+      if (res.ok) {
+        expect(res.status).toBe(Number(200));
+        return res;
+      }
+    });
   });
 
-  it("DEV Server - register a user", async () => {});
+  it("DEV Server - Error should be thrown for registering an existing user", async () => {
+    let data = {
+      name: "Test Person A",
+      email: "testpersonA@gmail.com",
+      password: "testpersonA",
+      balance: "0",
+    };
+
+    data = JSON.stringify(data);
+    await fetch("http://localhost:5000/api/users", {
+      method: "POST",
+      headers: { "Content-type": "application/json" },
+      body: data,
+    }).then((res) => {
+      // if anything but 200, this res.ok does not run
+      expect(res.status).toBe(Number(400));
+      // if (res.ok) {
+      //   return res.status;
+      // }
+    });
+  });
 
   afterAll(async () => {
     await globalTeardown();

@@ -8,8 +8,6 @@ const app = express();
 connectDB();
 
 //init middleware
-app.use(cors());
-// enable cors
 
 app.use(express.json({ extended: false }));
 
@@ -22,10 +20,11 @@ app.use(express.json({ extended: false }));
 app.get("/", (req, res) => res.send("API RUNNING"));
 
 // define Routes
-app.use("/api/users", require("./routes/api/users"));
-app.use("/api/auth", require("./routes/api/auth"));
-app.use("/api/profile", require("./routes/api/profile"));
-app.use("/api/posts", require("./routes/api/posts"));
+// enable cors
+app.use("/api/users", cors(), require("./routes/api/users"));
+app.use("/api/auth", cors(), require("./routes/api/auth"));
+app.use("/api/profile", cors(), require("./routes/api/profile"));
+app.use("/api/posts", cors(), require("./routes/api/posts"));
 
 const PORT = process.env.PORT || 5000;
 

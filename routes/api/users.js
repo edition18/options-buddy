@@ -4,6 +4,8 @@ const { check, validationResult } = require("express-validator");
 // https://express-validator.github.io/docs/check-api.html
 const User = require("../../models/User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config"); // to access jwtSecret
 
 // @route POST api/users
 // @desc  register user
@@ -42,7 +44,9 @@ router.post(
       if (user) {
         // user you are trying to registers already in DB
         // you cant make another registration of the same type
-        res.status(400).json({ errors: [{ msg: "user already exists" }] });
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "user already exists" }] });
       }
 
       user = new User({
@@ -55,9 +59,23 @@ router.post(
       const salt = await bcrypt.genSalt(10); // genSalt (n) n => rounds, more rounds better but slower
       user.password = await bcrypt.hash(password, salt); // encrypt the password
 
-      await user.save();
+      await user.save(); //.save is a method of Mongoose schema
 
-      res.send("user registered");
+      const payload = {
+        user: {
+          id: user.id, // mongoDB id is saved as _id, but mongoose does the extraction so use only id
+        },
+      };
+      // return JWT signed
+      jwt.sign(
+        payload,
+        config.get("jwtSecret"),
+        { expiresIn: 36000 }, // optional expiration
+        (err, token) => {
+          if (err) throw err;
+          return res.json({ token }); // return the token as a object
+        }
+      );
     } catch (err) {
       // err is an object
       console.error(err.message);

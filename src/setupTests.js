@@ -73,11 +73,15 @@ describe("Local Development server interactions test", () => {
   //     email: "testpersonA@gmail.com",
   //     password: "testpersonA",
   //   };
-  //   let changeProfileTo = {
+  //   let changeProfileToA = {
   //     interests: "golfing,gaming",
   //     bio: "I am now not interested in stocks",
   //   };
-  //   let token, retrievedProfile, updatedProfile, revertProfile;
+  //   let changeProfileToB = {
+  //     interests: "fishing,dreaming",
+  //     bio: "oh ho ho everyone",
+  //   };
+  //   let token, retrievedProfile, updatedProfile, revertProfile, changeProfileTo;
   //   it("DEV Server - jwt token should be generated for logging in an existing user", async () => {
   //     let data = {
   //       email: "testpersonA@gmail.com",
@@ -106,6 +110,16 @@ describe("Local Development server interactions test", () => {
   //         return res.json();
   //       })
   //       .then((data) => data);
+
+  //     retrievedProfile = {
+  //       interests: retrievedProfile["interests"],
+  //       bio: retrievedProfile["bio"],
+  //     };
+  //     // check if content similiar
+  //     retrievedProfile["interests"].toString() ===
+  //     changeProfileToA["interests"].toString()
+  //       ? (changeProfileTo = changeProfileToB)
+  //       : (changeProfileTo = changeProfileToA);
   //   });
 
   //   it("DEV Server - make changes to current profile", async () => {
@@ -126,6 +140,22 @@ describe("Local Development server interactions test", () => {
   //         )
   //       );
   //   });
+
+  //   // // this not working , to investigate later
+  //   // it("DEV Server - revert to old profile", async () => {
+  //   //   console.log(retrievedProfile);
+  //   //   revertProfile = await fetch("http://localhost:5000/api/profile", {
+  //   //     method: "POST",
+  //   //     headers: { "x-auth-token": token, "Content-Type": "application/json" },
+  //   //     body: JSON.stringify(retrievedProfile),
+  //   //   })
+  //   //     .then((res) => {
+  //   //       console.log(res.status);
+  //   //       expect(res.status).toBe(Number(400));
+  //   //       return res.json();
+  //   //     })
+  //   //     .catch((err) => console.error(err.message));
+  //   // });
   // });
 
   // it("DEV Server - check if can retrieve ALL profiles without auth", async () => {
@@ -140,29 +170,101 @@ describe("Local Development server interactions test", () => {
   //   });
   // });
 
-  it("DEV Server - get profile by user id", async () => {
-    // get all profiles
-    let allProfiles = await fetch("http://localhost:5000/api/profile/", {
-      method: "GET",
-    })
-      .then((res) => {
-        console.log(res.status);
-        return res.json();
-      })
-      .then((data) => data);
+  // it("DEV Server - get profile by user id", async () => {
+  //   // get all profiles
+  //   let allProfiles = await fetch("http://localhost:5000/api/profile/", {
+  //     method: "GET",
+  //   })
+  //     .then((res) => {
+  //       console.log(res.status);
+  //       return res.json();
+  //     })
+  //     .then((data) => data);
 
-    let profileByUserId = await fetch(
-      `http://localhost:5000/api/profile/user/${allProfiles[0]["user"]["_id"]}`,
-      {
-        method: "GET",
-      }
-    )
-      .then((res) => {
-        expect(res.status).toBe(Number(200));
-        return res.json();
-      })
-      .then((data) => data);
-  });
+  //   await fetch(
+  //     `http://localhost:5000/api/profile/user/${allProfiles[0]["user"]["_id"]}`,
+  //     {
+  //       method: "GET",
+  //     }
+  //   )
+  //     .then((res) => {
+  //       expect(res.status).toBe(Number(200));
+  //       return res.json();
+  //     })
+  //     .then((data) => data);
+  // });
+
+  // it("DEV Server - get all profiles, then search profile by first user id", async () => {
+  //   // get all profiles
+  //   let allProfiles = await fetch("http://localhost:5000/api/profile/", {
+  //     method: "GET",
+  //   })
+  //     .then((res) => {
+  //       console.log(res.status);
+  //       return res.json();
+  //     })
+  //     .then((data) => data);
+
+  //   await fetch(
+  //     `http://localhost:5000/api/profile/user/${allProfiles[0]["user"]["_id"]}`,
+  //     {
+  //       method: "GET",
+  //     }
+  //   )
+  //     .then((res) => {
+  //       expect(res.status).toBe(Number(200));
+  //       return res.json();
+  //     })
+  //     .then((data) => data);
+  // });
+
+  // describe("DEV Server - log in, get generated token, attempt to add experience", () => {
+  //   let loginData = {
+  //     email: "testpersonA@gmail.com",
+  //     password: "testpersonA",
+  //   };
+  //   let newExp = {
+  //     title: "test new title",
+  //     company: "test new coy",
+  //     location: "india",
+  //     from: "6/2/2008",
+  //     current: false,
+  //     description: "test new desc",
+  //   };
+  //   let token, updatedProfile;
+  //   it("DEV Server - jwt token should be generated for logging in an existing user", async () => {
+  //     token = await fetch("http://localhost:5000/api/auth", {
+  //       method: "POST",
+  //       headers: { "Content-type": "application/json" },
+  //       body: JSON.stringify(loginData),
+  //     })
+  //       .then((res) => {
+  //         console.log(res.status);
+  //         return res.json();
+  //       })
+  //       .then((data) => data["token"]);
+  //   });
+  //   it("DEV Server - use generated token to add to existing experiences", async () => {
+  //     updatedProfile = await fetch(
+  //       "http://localhost:5000/api/profile/experience",
+  //       {
+  //         method: "PUT",
+  //         headers: {
+  //           "x-auth-token": token,
+  //           "Content-type": "application/json",
+  //         },
+  //         body: JSON.stringify(newExp),
+  //       }
+  //     )
+  //       .then((res) => {
+  //         console.log(res.status);
+  //         return res.json();
+  //       })
+  //       .then((data) =>
+  //         expect(data["experience"][0]["title"]).toBe(String(newExp["title"]))
+  //       );
+  //   });
+  // });
 
   afterAll(async () => {
     await globalTeardown();

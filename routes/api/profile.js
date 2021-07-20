@@ -149,6 +149,55 @@ router.get("/user/:user_id", async (req, res) => {
   }
 });
 
+// @route PUT api/profile/experience (you could have POST as well) // put is really similiar in meaning to update
+// @desc  add profile experience
+// @access Private
+
+router.put(
+  "/experience",
+  [
+    auth,
+    [
+      check("title", "title needed").not().isEmpty(),
+      check("company", "company is needed").not().isEmpty(),
+      check("from", "from date is needed").not().isEmpty(),
+    ],
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { title, company, from, to, current, description } = req.body; // pull out the fields from the request
+
+    const newExp = {
+      // put the new experience to a object
+      title,
+      company,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    try {
+      const profile = await Profile.findOne({ user: req.user.id });
+      // find the profile, the profile MUST exists since we got pass the auth middleware
+      // thus no need to build for false scenarios
+
+      profile.experience.unshift(newExp); //push new experience in front
+      // note that the newExp forms a item in the experience array, with its own id!
+      await profile.save();
+
+      res.json(profile); // return the now updated profile
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
 // // @route DELTE api/profile
 // // @desc  delete profile, user and posts
 // // @access Private
@@ -168,52 +217,6 @@ router.get("/user/:user_id", async (req, res) => {
 //     res.status(500).send("server error");
 //   }
 // });
-
-// // @route PUT api/profile/experience (you could have POST as well)
-// // @desc  add profile experience
-// // @access Private
-
-// router.put(
-//   "/experience",
-//   [
-//     auth,
-//     [
-//       check("title", "title needed").not().isEmpty(),
-//       check("company", "company is needed").not().isEmpty(),
-//       check("from", "from date is needed").not().isEmpty(),
-//     ],
-//   ],
-//   async (req, res) => {
-//     const errors = validationResult(req);
-//     if (!errors.isEmpty()) {
-//       return res.status(400).json({ errors: errors.array() });
-//     }
-
-//     const { title, company, from, to, current, description } = req.body;
-
-//     const newExp = {
-//       title,
-//       company,
-//       from,
-//       from,
-//       to,
-//       current,
-//       description,
-//     };
-
-//     try {
-//       const profile = await Profile.findOne({ user: req.user.id });
-
-//       profile.experience.unshift(newExp); //push new experience in front
-//       await profile.save();
-
-//       res.json(profile);
-//     } catch (err) {
-//       console.error(err.message);
-//       res.status(500).send("Server Error");
-//     }
-//   }
-// );
 
 // // @route DELETE api/profile/experience/:exp_id (you could have PUT as well)
 // // @desc  delete profile experience

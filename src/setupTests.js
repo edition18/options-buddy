@@ -8,6 +8,7 @@ const { MongoClient } = require("mongodb");
 const User = require("../models/User"); // user Model
 const globalSetup = require("../config/global-setup"); // dev server teardown
 const globalTeardown = require("../config/global-teardown"); // dev server teardown
+const faker = require("faker");
 
 describe("Local Development server interactions test", () => {
   //   let connection;
@@ -73,15 +74,12 @@ describe("Local Development server interactions test", () => {
   //     email: "testpersonA@gmail.com",
   //     password: "testpersonA",
   //   };
-  //   let changeProfileToA = {
-  //     interests: "golfing,gaming",
-  //     bio: "I am now not interested in stocks",
+  //   let changeProfileTo = {
+  //     interests: `${faker.lorem.words()}`,
+  //     bio: `${faker.lorem.words()}`,
   //   };
-  //   let changeProfileToB = {
-  //     interests: "fishing,dreaming",
-  //     bio: "oh ho ho everyone",
-  //   };
-  //   let token, retrievedProfile, updatedProfile, revertProfile, changeProfileTo;
+
+  //   let token, retrievedProfile, updatedProfile, revertProfile;
   //   it("DEV Server - jwt token should be generated for logging in an existing user", async () => {
   //     let data = {
   //       email: "testpersonA@gmail.com",
@@ -115,11 +113,6 @@ describe("Local Development server interactions test", () => {
   //       interests: retrievedProfile["interests"],
   //       bio: retrievedProfile["bio"],
   //     };
-  //     // check if content similiar
-  //     retrievedProfile["interests"].toString() ===
-  //     changeProfileToA["interests"].toString()
-  //       ? (changeProfileTo = changeProfileToB)
-  //       : (changeProfileTo = changeProfileToA);
   //   });
 
   //   it("DEV Server - make changes to current profile", async () => {
@@ -224,13 +217,14 @@ describe("Local Development server interactions test", () => {
   //     password: "testpersonA",
   //   };
   //   let newExp = {
-  //     title: "test new title",
-  //     company: "test new coy",
-  //     location: "india",
-  //     from: "6/2/2008",
+  //     title: `${faker.name.jobTitle()}`,
+  //     company: `${faker.company.companyName()}`,
+  //     location: `${faker.address.country()}`,
+  //     from: `${faker.date.past()}`,
   //     current: false,
-  //     description: "test new desc",
+  //     description: `${faker.lorem.words()}`,
   //   };
+
   //   let token, updatedProfile;
   //   it("DEV Server - jwt token should be generated for logging in an existing user", async () => {
   //     token = await fetch("http://localhost:5000/api/auth", {

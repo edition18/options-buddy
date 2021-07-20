@@ -1,5 +1,8 @@
 To make this as a MERN stack app
 
+20 Jul 2021
+introduced faker package
+
 18 Jul 2021
 added cors, jest-dev-server and jest-mongodb
 

@@ -103,45 +103,51 @@ router.post(
   }
 );
 
-// // @route GET api/profile
-// // @desc  GET all profiles
-// // @access Public
+// @route GET api/profile
+// @desc  GET all profiles
+// @access Public
 
-// router.get("/", async (req, res) => {
-//   try {
-//     const profiles = await Profile.find().populate("user", ["name", "avatar"]);
-//     res.send(profiles);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send("server error");
-//   }
-// });
+router.get("/", async (req, res) => {
+  try {
+    const profiles = await Profile.find().populate("user", ["name"]);
+    // the name field only exists in user,
+    // which is linked to profile via
+    // user: {
+    //   type: mongoose.Schema.Types.ObjectId, // _id in mongoDB
+    //   ref: "user", // refer to the user schema we created
+    //   // module.exports = User = mongoose.model("user", UserSchema)
+    res.send(profiles);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("server error");
+  }
+});
 
-// // @route GET api/profile/user/user_id
-// // @desc  GET profile by user id
-// // @access Public
+// @route GET api/profile/user/user_id
+// @desc  GET profile by user id
+// @access Public
 
-// router.get("/user/:user_id", async (req, res) => {
-//   try {
-//     const profile = await Profile.findOne({
-//       user: req.params.user_id,
-//     }).populate("user", ["name", "avatar"]);
-//     //findOne(key in DB, corresponding value match desired)
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.user_id,
+    }).populate("user", ["name", "avatar"]);
+    //findOne(key in DB, corresponding value match desired)
 
-//     if (!profile) {
-//       return res.status(400).json({ msg: "profile not found!" });
-//     }
+    if (!profile) {
+      return res.status(400).json({ msg: "profile not found!" });
+    }
 
-//     res.send(profile);
-//   } catch (err) {
-//     console.error(err.message);
-//     if (err.kind == "ObjectId") {
-//       //err.kind attempts to match the key of the error
-//       return res.status(400).json({ msg: "profile not found!" });
-//     }
-//     res.status(500).send("server error");
-//   }
-// });
+    res.send(profile);
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind == "ObjectId") {
+      //err.kind attempts to match the key of the error, in this case, ObjectId/ userId is not valid
+      return res.status(400).json({ msg: "profile not found!" });
+    }
+    res.status(500).send("server error");
+  }
+});
 
 // // @route DELTE api/profile
 // // @desc  delete profile, user and posts
